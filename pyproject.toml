@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "cli-games"
+version = "0.1.0"
+description = "Classic and simple games that can be played via CLI"
+authors = ["dg-codes <dgcodes@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.1.1"
+pre-commit = "^3.6.0"
+isort = "^5.13.2"
+pylint = "^3.0.3"
+flake8 = "^7.0.0"
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
