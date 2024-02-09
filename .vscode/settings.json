@@ -1,0 +1,25 @@
+{
+    "editor.rulers": [
+        80
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "black-formatter.args": [
+        "--line-length=80"
+    ],
+    "isort.args": [
+        "--profile",
+        "black",
+        "--line-length",
+        "80"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "cSpell.words": [
+        "fizzbuzz"
+    ],
+}
