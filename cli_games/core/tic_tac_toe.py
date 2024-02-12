@@ -12,8 +12,13 @@ def display_game_board(matrix: list[Any]) -> None:
 def check_winning_conditions(matrix: dict[str, Any], mark: str) -> bool:
     if (
         (matrix["A"] == matrix["B"] == matrix["C"] == mark)
+        or (matrix["D"] == matrix["E"] == matrix["F"] == mark)
+        or (matrix["G"] == matrix["H"] == matrix["I"] == mark)
         or (matrix["A"] == matrix["D"] == matrix["G"] == mark)
+        or (matrix["B"] == matrix["E"] == matrix["H"] == mark)
+        or (matrix["C"] == matrix["F"] == matrix["I"] == mark)
         or (matrix["A"] == matrix["E"] == matrix["I"] == mark)
+        or (matrix["C"] == matrix["E"] == matrix["G"] == mark)
     ):
         return True
     return False
