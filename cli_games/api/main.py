@@ -20,7 +20,9 @@ def run_app():
     system("cls" if name == "nt" else "clear")
     if user_input == "1":
         current_directory = Path(getcwd())
-        words = load_data(current_directory / "data" / "hangman.txt")
+        words = load_data(
+            current_directory / "cli_games" / "data" / "hangman.txt"
+        )
         game_settings = hangman.GameSettings(word_list=words)
         hangman.run_game(game_settings)
     if user_input == "3":
