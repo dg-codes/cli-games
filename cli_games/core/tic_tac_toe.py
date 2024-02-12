@@ -1,4 +1,6 @@
-from os import name, system
+import random
+from os import name, system, wait
+from time import sleep
 from typing import Any
 
 
@@ -35,7 +37,7 @@ def is_game_finished(matrix: dict[str, Any]) -> bool:
         print("\nYou lose!")
         return True
 
-    board_filled = 0 not in list(matrix.values())
+    board_filled = "-" not in list(matrix.values())
     if board_filled:
         print("\nIt's a tie!")
         return True
@@ -45,15 +47,15 @@ def is_game_finished(matrix: dict[str, Any]) -> bool:
 
 def run_game():
     matrix = {
-        "A": 0,
-        "B": 0,
-        "C": 0,
-        "D": 0,
-        "E": 0,
-        "F": 0,
-        "G": 0,
-        "H": 0,
-        "I": 0,
+        "A": "-",
+        "B": "-",
+        "C": "-",
+        "D": "-",
+        "E": "-",
+        "F": "-",
+        "G": "-",
+        "H": "-",
+        "I": "-",
     }
 
     display_game_board(list(matrix.keys()))
@@ -67,6 +69,13 @@ def run_game():
             matrix[user_choice.upper()] = "X"
             used_choices.add(user_choice)
 
+            available_options = [
+                x for x in matrix.keys() if x not in used_choices
+            ]
+            ai_choice = random.choice(available_options)
+            sleep(0.5)
+            matrix[ai_choice] = "O"
+            used_choices.add(ai_choice)
         system("cls" if name == "nt" else "clear")
         display_game_board(list(matrix.keys()))
         print()
