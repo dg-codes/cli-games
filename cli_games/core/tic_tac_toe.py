@@ -73,6 +73,15 @@ def run_game():
                 x for x in matrix.keys() if x not in used_choices
             ]
             ai_choice = random.choice(available_options)
+            system("cls" if name == "nt" else "clear")
+            display_game_board(list(matrix.keys()))
+            print()
+            display_game_board(list(matrix.values()))
+
+            game_finished = is_game_finished(matrix)
+            if game_finished:
+                break
+
             sleep(0.5)
             matrix[ai_choice] = "O"
             used_choices.add(ai_choice)
