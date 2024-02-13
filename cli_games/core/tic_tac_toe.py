@@ -5,11 +5,16 @@ from typing import Any
 
 
 class BoardCell:
-    value: str = "-"
+    def __init__(self, value: str = "-") -> None:
+        self.value = value
 
     @property
     def is_empty(self):
         return self.value == "-"
+
+    def set_value(self, value: str) -> str:
+        self.value = value
+        return self.value
 
 
 def display_game_board(matrix: list[Any]) -> None:
