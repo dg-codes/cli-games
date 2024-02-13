@@ -4,6 +4,14 @@ from time import sleep
 from typing import Any
 
 
+class BoardCell:
+    value: str = "-"
+
+    @property
+    def is_empty(self):
+        return self.value == "-"
+
+
 def display_game_board(matrix: list[Any]) -> None:
     for i in range(3):
         for j in range(3):
