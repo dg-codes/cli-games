@@ -1,9 +1,7 @@
 import random
-from os import name, system, wait
+from os import name, system
 from time import sleep
 from typing import Any
-
-from exceptiongroup import catch
 
 
 class BoardCell:
