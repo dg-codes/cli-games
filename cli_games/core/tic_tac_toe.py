@@ -56,9 +56,7 @@ class GameBoard:
 
     @property
     def is_full(self):
-        return (
-            len([x for x in self._matrix.values() if x.is_empty is False]) == 0
-        )
+        return len([x for x in self._matrix.values() if x.is_empty]) == 0
 
     def update_board(
         self, key: str, new_value: str, force_overwrite: bool = False
