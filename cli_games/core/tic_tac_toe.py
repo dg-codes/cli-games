@@ -6,14 +6,37 @@ from typing import Any
 
 class BoardCell:
     def __init__(self, value: str = "-") -> None:
+        self._allowable_values = ["X", "O", "-"]
         self.value = value
 
     @property
-    def is_empty(self):
-        return self.value == "-"
+    def value(self):
+        return self._value
 
-    def set_value(self, value: str) -> str:
-        self.value = value
+    @property
+    def is_empty(self):
+        return self._value == "-"
+
+    def clear_value(self) -> str:
+        """Set the `value` property back to the default `-`
+
+        Returns
+        -------
+        str
+            The default cells value of `-`.
+        """
+        self.value = "-"
+        return self.value
+
+    @value.setter
+    def value(self, value: str) -> str:
+        _new_value = value.upper()
+        if _new_value not in self._allowable_values:
+            raise ValueError(
+                f"{value} is invalid. It should be either `X`, `O` or `-`."
+            )
+
+        self._value = value
         return self.value
 
 
