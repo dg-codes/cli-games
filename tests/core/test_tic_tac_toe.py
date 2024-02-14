@@ -27,3 +27,21 @@ class TestBoardCell:
     def test_constructor_setter(cls):
         with pytest.raises(ValueError) as value_error:
             cell = tic_tac_toe.BoardCell("A")
+
+
+class TestGameBoard:
+    @classmethod
+    def test_is_full(cls):
+        board = tic_tac_toe.GameBoard()
+        board._matrix = {
+            "A": tic_tac_toe.BoardCell("X"),
+            "B": tic_tac_toe.BoardCell("X"),
+            "C": tic_tac_toe.BoardCell("X"),
+            "D": tic_tac_toe.BoardCell("X"),
+            "E": tic_tac_toe.BoardCell("X"),
+            "F": tic_tac_toe.BoardCell("X"),
+            "G": tic_tac_toe.BoardCell("X"),
+            "H": tic_tac_toe.BoardCell("X"),
+            "I": tic_tac_toe.BoardCell("X"),
+        }
+        assert board.is_full
