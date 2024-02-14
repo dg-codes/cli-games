@@ -67,7 +67,7 @@ def run_game(settings: GameSettings) -> None:
 
         if "_" not in word_display:
             print(
-                f"Correct!",
+                "Correct!",
                 f"The word was '{selected_word}'.",
                 "Here's a cake to celebrate! 🎂",
             )

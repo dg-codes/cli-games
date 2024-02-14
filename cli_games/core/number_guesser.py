@@ -14,7 +14,7 @@ class GameSettings:
 
 def run_game(settings: GameSettings):
     print(
-        f"I'm thinking of a number between",
+        "I'm thinking of a number between",
         f"{settings.range_start} and {settings.range_end}.",
         f"Can you guess it? You have {settings.total_lives} tries.",
     )
@@ -25,7 +25,7 @@ def run_game(settings: GameSettings):
     player_guess = None
 
     while True:
-        player_guess = int(input(f"Your guess is?\n"))
+        player_guess = int(input("Your guess is?\n"))
 
         if player_guess == number_to_guess:
             print(
