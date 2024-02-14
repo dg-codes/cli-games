@@ -3,6 +3,8 @@ from os import name, system, wait
 from time import sleep
 from typing import Any
 
+from exceptiongroup import catch
+
 
 class BoardCell:
     def __init__(self, value: str = "-") -> None:
@@ -38,6 +40,48 @@ class BoardCell:
 
         self._value = value
         return self.value
+
+
+class GameBoard:
+    def __init__(self) -> None:
+        self._matrix = {
+            "A": BoardCell(),
+            "B": BoardCell(),
+            "C": BoardCell(),
+            "D": BoardCell(),
+            "E": BoardCell(),
+            "F": BoardCell(),
+            "G": BoardCell(),
+            "H": BoardCell(),
+            "I": BoardCell(),
+        }
+
+    @property
+    def is_full(self):
+        return (
+            len([x for x in self._matrix.values() if x.is_empty is False]) == 0
+        )
+
+    def update_board(
+        self, key: str, new_value: str, force_overwrite: bool = False
+    ) -> dict[str, BoardCell]:
+        if force_overwrite:
+            self._matrix[key].value = new_value
+            return self._matrix
+
+        if self.is_full:
+            print("There are no empty cells. Cannot update game board.")
+            return self._matrix
+
+        if self._matrix[key].is_empty is False:
+            print("Cell is not empty. Try a different one.")
+            return self._matrix
+
+        self._matrix[key].value = new_value
+        return self._matrix
+
+    def get_board(self) -> dict[str, BoardCell]:
+        return self._matrix
 
 
 def display_game_board(matrix: list[Any]) -> None:
