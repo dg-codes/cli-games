@@ -1,5 +1,3 @@
-from multiprocessing import Value
-
 import pytest
 
 from cli_games.core import tic_tac_toe
@@ -25,8 +23,8 @@ class TestBoardCell:
 
     @classmethod
     def test_constructor_setter(cls):
-        with pytest.raises(ValueError) as value_error:
-            cell = tic_tac_toe.BoardCell("A")
+        with pytest.raises(ValueError):
+            tic_tac_toe.BoardCell("A")
 
 
 @pytest.fixture
