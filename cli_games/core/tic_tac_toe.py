@@ -176,34 +176,42 @@ class GameBoard:
         return False
 
 
-def run_game():
-    game_board = GameBoard()
-    game_board.display_game_board_help()
-    print()
-    game_board.display_game_board()
-    user_choice = None
-    available_options = game_board.get_available_options()
-    while user_choice not in available_options:
-        user_choice = input("Select a square (A to I): ").upper()
-        if user_choice in available_options:
-            game_board.update_board(user_choice.upper(), TOKEN_PLAYER)
-            available_options = game_board.get_available_options()
-            ai_choice = random.choice(available_options)
-            system("cls" if name == "nt" else "clear")
-            game_board.display_game_board_help()
-            print()
-            game_board.display_game_board()
+class TicTacToe:
+    def __init__(self, game_board: GameBoard) -> None:
+        self.board = game_board
 
-            game_finished = game_board.is_game_finished()
+    def display_game(self):
+        self.board.display_game_board_help()
+        print()
+        self.board.display_game_board()
+
+    def run_game(self):
+        self.display_game()
+        user_choice = None
+        available_options = self.board.get_available_options()
+        while user_choice not in available_options:
+            user_choice = input("Select a square (A to I): ").upper()
+            if user_choice in available_options:
+                self.board.update_board(user_choice.upper(), TOKEN_PLAYER)
+                available_options = self.board.get_available_options()
+                ai_choice = random.choice(available_options)
+                system("cls" if name == "nt" else "clear")
+                self.display_game()
+
+                game_finished = self.board.is_game_finished()
+                if game_finished:
+                    break
+
+                sleep(0.5)
+                self.board.update_board(ai_choice, TOKEN_CPU)
+            system("cls" if name == "nt" else "clear")
+            self.display_game()
+            game_finished = self.board.is_game_finished()
             if game_finished:
                 break
 
-            sleep(0.5)
-            game_board.update_board(ai_choice, TOKEN_CPU)
-        system("cls" if name == "nt" else "clear")
-        game_board.display_game_board_help()
-        print()
-        game_board.display_game_board()
-        game_finished = game_board.is_game_finished()
-        if game_finished:
-            break
+
+def run_game():
+    game_board = GameBoard()
+    game = TicTacToe(game_board)
+    game.run_game()
