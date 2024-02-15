@@ -1,7 +1,6 @@
 import random
 from os import name, system
 from time import sleep
-from typing import Any
 
 
 class BoardCell:
@@ -56,7 +55,7 @@ class GameBoard:
 
     @property
     def is_full(self):
-        return len([x for x in self._matrix.values() if x.is_empty]) == 0
+        return len(self.get_available_options()) == 0
 
     def update_board(
         self, key: str, new_value: str, force_overwrite: bool = False
@@ -76,95 +75,131 @@ class GameBoard:
         self._matrix[key].value = new_value
         return self._matrix
 
+    def get_available_options(self) -> list[str]:
+        available_moves = [
+            cell_name
+            for cell_name, cell_value in self._matrix.items()
+            if cell_value.is_empty
+        ]
+        return available_moves
+
     def get_board(self) -> dict[str, BoardCell]:
         return self._matrix
 
+    def display_game_board(self) -> None:
+        board_display = [cell.value for cell in self._matrix.values()]
+        self._display_matrix(board_display)
 
-def display_game_board(matrix: list[Any]) -> None:
-    for i in range(3):
-        for j in range(3):
-            print(matrix[i * 3 + j], end=" ")
-        print()
+    def display_game_board_help(self) -> None:
+        board_display = list(self._matrix.keys())
+        self._display_matrix(board_display)
 
+    def _display_matrix(self, matrix: list[str]) -> None:
+        for i in range(3):
+            for j in range(3):
+                print(matrix[i * 3 + j], end=" ")
+            print()
 
-def check_winning_conditions(matrix: dict[str, Any], mark: str) -> bool:
-    if (
-        (matrix["A"] == matrix["B"] == matrix["C"] == mark)
-        or (matrix["D"] == matrix["E"] == matrix["F"] == mark)
-        or (matrix["G"] == matrix["H"] == matrix["I"] == mark)
-        or (matrix["A"] == matrix["D"] == matrix["G"] == mark)
-        or (matrix["B"] == matrix["E"] == matrix["H"] == mark)
-        or (matrix["C"] == matrix["F"] == matrix["I"] == mark)
-        or (matrix["A"] == matrix["E"] == matrix["I"] == mark)
-        or (matrix["C"] == matrix["E"] == matrix["G"] == mark)
-    ):
-        return True
-    return False
+    def check_winning_conditions(self, mark: str) -> bool:
+        if (
+            (
+                self._matrix["A"].value
+                == self._matrix["B"].value
+                == self._matrix["C"].value
+                == mark
+            )
+            or (
+                self._matrix["D"].value
+                == self._matrix["E"].value
+                == self._matrix["F"].value
+                == mark
+            )
+            or (
+                self._matrix["G"].value
+                == self._matrix["H"].value
+                == self._matrix["I"].value
+                == mark
+            )
+            or (
+                self._matrix["A"].value
+                == self._matrix["D"].value
+                == self._matrix["G"].value
+                == mark
+            )
+            or (
+                self._matrix["B"].value
+                == self._matrix["E"].value
+                == self._matrix["H"].value
+                == mark
+            )
+            or (
+                self._matrix["C"].value
+                == self._matrix["F"].value
+                == self._matrix["I"].value
+                == mark
+            )
+            or (
+                self._matrix["A"].value
+                == self._matrix["E"].value
+                == self._matrix["I"].value
+                == mark
+            )
+            or (
+                self._matrix["C"].value
+                == self._matrix["E"].value
+                == self._matrix["G"].value
+                == mark
+            )
+        ):
+            return True
+        return False
 
+    def is_game_finished(self) -> bool:
+        player_won = self.check_winning_conditions("X")
+        if player_won:
+            print("\nYou win!")
+            return True
 
-def is_game_finished(matrix: dict[str, Any]) -> bool:
-    player_won = check_winning_conditions(matrix, "X")
-    if player_won:
-        print("\nYou win!")
-        return True
+        player_lost = self.check_winning_conditions("O")
+        if player_lost:
+            print("\nYou lose!")
+            return True
 
-    player_lost = check_winning_conditions(matrix, "O")
-    if player_lost:
-        print("\nYou lose!")
-        return True
+        if self.is_full:
+            print("\nIt's a tie!")
+            return True
 
-    board_filled = "-" not in list(matrix.values())
-    if board_filled:
-        print("\nIt's a tie!")
-        return True
-
-    return False
+        return False
 
 
 def run_game():
-    matrix = {
-        "A": "-",
-        "B": "-",
-        "C": "-",
-        "D": "-",
-        "E": "-",
-        "F": "-",
-        "G": "-",
-        "H": "-",
-        "I": "-",
-    }
-
-    display_game_board(list(matrix.keys()))
+    game_board = GameBoard()
+    game_board.display_game_board_help()
     print()
-    display_game_board(list(matrix.values()))
+    game_board.display_game_board()
     user_choice = None
-    used_choices = set()
-    while user_choice not in matrix.keys() or user_choice in used_choices:
+    available_options = game_board.get_available_options()
+    while user_choice not in available_options:
         user_choice = input("Select a square (A to I): ").upper()
-        if user_choice in matrix.keys():
-            matrix[user_choice.upper()] = "X"
-            used_choices.add(user_choice)
-
-            available_options = [
-                x for x in matrix.keys() if x not in used_choices
-            ]
+        if user_choice in available_options:
+            game_board.update_board(user_choice.upper(), "X")
+            available_options = game_board.get_available_options()
             ai_choice = random.choice(available_options)
             system("cls" if name == "nt" else "clear")
-            display_game_board(list(matrix.keys()))
+            game_board.display_game_board_help()
             print()
-            display_game_board(list(matrix.values()))
+            game_board.display_game_board()
 
-            game_finished = is_game_finished(matrix)
+            game_finished = game_board.is_game_finished()
             if game_finished:
                 break
 
             sleep(0.5)
-            matrix[ai_choice] = "O"
-            used_choices.add(ai_choice)
+            game_board.update_board(ai_choice, "O")
         system("cls" if name == "nt" else "clear")
-        display_game_board(list(matrix.keys()))
+        game_board.display_game_board_help()
         print()
-        display_game_board(list(matrix.values()))
-        game_finished = is_game_finished(matrix)
+        game_board.display_game_board()
+        game_finished = game_board.is_game_finished()
         if game_finished:
             break
