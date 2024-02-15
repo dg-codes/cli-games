@@ -2,10 +2,14 @@ import random
 from os import name, system
 from time import sleep
 
+TOKEN_PLAYER = "X"
+TOKEN_CPU = "O"
+TOKEN_EMPTY = "-"
+
 
 class BoardCell:
-    def __init__(self, value: str = "-") -> None:
-        self._allowable_values = ["X", "O", "-"]
+    def __init__(self, value: str = TOKEN_EMPTY) -> None:
+        self._allowable_values = [TOKEN_PLAYER, TOKEN_CPU, TOKEN_EMPTY]
         self.value = value
 
     @property
@@ -14,7 +18,7 @@ class BoardCell:
 
     @property
     def is_empty(self):
-        return self._value == "-"
+        return self._value == TOKEN_EMPTY
 
     def clear_value(self) -> str:
         """Set the `value` property back to the default `-`
@@ -24,7 +28,7 @@ class BoardCell:
         str
             The default cells value of `-`.
         """
-        self.value = "-"
+        self.value = TOKEN_EMPTY
         return self.value
 
     @value.setter
@@ -100,67 +104,67 @@ class GameBoard:
                 print(matrix[i * 3 + j], end=" ")
             print()
 
-    def check_winning_conditions(self, mark: str) -> bool:
+    def check_winning_conditions(self, token: str) -> bool:
         if (
             (
                 self._matrix["A"].value
                 == self._matrix["B"].value
                 == self._matrix["C"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["D"].value
                 == self._matrix["E"].value
                 == self._matrix["F"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["G"].value
                 == self._matrix["H"].value
                 == self._matrix["I"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["A"].value
                 == self._matrix["D"].value
                 == self._matrix["G"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["B"].value
                 == self._matrix["E"].value
                 == self._matrix["H"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["C"].value
                 == self._matrix["F"].value
                 == self._matrix["I"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["A"].value
                 == self._matrix["E"].value
                 == self._matrix["I"].value
-                == mark
+                == token
             )
             or (
                 self._matrix["C"].value
                 == self._matrix["E"].value
                 == self._matrix["G"].value
-                == mark
+                == token
             )
         ):
             return True
         return False
 
     def is_game_finished(self) -> bool:
-        player_won = self.check_winning_conditions("X")
+        player_won = self.check_winning_conditions(TOKEN_PLAYER)
         if player_won:
             print("\nYou win!")
             return True
 
-        player_lost = self.check_winning_conditions("O")
+        player_lost = self.check_winning_conditions(TOKEN_CPU)
         if player_lost:
             print("\nYou lose!")
             return True
@@ -182,7 +186,7 @@ def run_game():
     while user_choice not in available_options:
         user_choice = input("Select a square (A to I): ").upper()
         if user_choice in available_options:
-            game_board.update_board(user_choice.upper(), "X")
+            game_board.update_board(user_choice.upper(), TOKEN_PLAYER)
             available_options = game_board.get_available_options()
             ai_choice = random.choice(available_options)
             system("cls" if name == "nt" else "clear")
@@ -195,7 +199,7 @@ def run_game():
                 break
 
             sleep(0.5)
-            game_board.update_board(ai_choice, "O")
+            game_board.update_board(ai_choice, TOKEN_CPU)
         system("cls" if name == "nt" else "clear")
         game_board.display_game_board_help()
         print()
