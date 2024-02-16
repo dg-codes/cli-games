@@ -189,21 +189,29 @@ class TicTacToe:
         self.display_game()
         user_choice = None
         available_options = self.board.get_available_options()
-        while user_choice not in available_options:
+        while any(available_options):
             user_choice = input("Select a square (A to I): ").upper()
-            if user_choice in available_options:
-                self.board.update_board(user_choice.upper(), TOKEN_PLAYER)
-                available_options = self.board.get_available_options()
-                ai_choice = random.choice(available_options)
-                system("cls" if name == "nt" else "clear")
-                self.display_game()
+            if user_choice not in available_options:
+                print("Cell already used. Try a different one.")
+                continue
 
-                game_finished = self.board.is_game_finished()
-                if game_finished:
-                    break
+            self.board.update_board(user_choice.upper(), TOKEN_PLAYER)
 
-                sleep(0.5)
-                self.board.update_board(ai_choice, TOKEN_CPU)
+            game_finished = self.board.is_game_finished()
+            if game_finished:
+                break
+
+            available_options = self.board.get_available_options()
+            ai_choice = random.choice(available_options)
+            system("cls" if name == "nt" else "clear")
+            self.display_game()
+
+            game_finished = self.board.is_game_finished()
+            if game_finished:
+                break
+
+            sleep(0.5)
+            self.board.update_board(ai_choice, TOKEN_CPU)
             system("cls" if name == "nt" else "clear")
             self.display_game()
             game_finished = self.board.is_game_finished()
