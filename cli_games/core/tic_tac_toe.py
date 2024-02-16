@@ -188,11 +188,12 @@ class TicTacToe:
     def run_game(self):
         self.display_game()
         user_choice = None
-        available_options = self.board.get_available_options()
-        while any(available_options):
+        while any(self.board.get_available_options()):
             user_choice = input("Select a square (A to I): ").upper()
-            if user_choice not in available_options:
-                print("Cell already used. Try a different one.")
+            if user_choice not in self.board.get_available_options():
+                system("cls" if name == "nt" else "clear")
+                self.display_game()
+                print("Invalid move. Please try a different one.")
                 continue
 
             self.board.update_board(user_choice.upper(), TOKEN_PLAYER)
@@ -201,8 +202,7 @@ class TicTacToe:
             if game_finished:
                 break
 
-            available_options = self.board.get_available_options()
-            ai_choice = random.choice(available_options)
+            ai_choice = random.choice(self.board.get_available_options())
             system("cls" if name == "nt" else "clear")
             self.display_game()
 
