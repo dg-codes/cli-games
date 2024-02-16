@@ -181,42 +181,35 @@ class TicTacToe:
         self.board = game_board
 
     def display_game(self):
+        system("cls" if name == "nt" else "clear")
         self.board.display_game_board_help()
         print()
         self.board.display_game_board()
 
+    def update_and_continue_game(self, cell_key: str, cell_value: str) -> str:
+        if self.board.is_game_finished():
+            return False
+
+        self.board.update_board(cell_key, cell_value)
+        self.display_game()
+        return True
+
     def run_game(self):
         self.display_game()
-        user_choice = None
-        while any(self.board.get_available_options()):
+        continue_game = True
+        while continue_game:
             user_choice = input("Select a square (A to I): ").upper()
             if user_choice not in self.board.get_available_options():
-                system("cls" if name == "nt" else "clear")
                 self.display_game()
                 print("Invalid move. Please try a different one.")
                 continue
 
-            self.board.update_board(user_choice.upper(), TOKEN_PLAYER)
-
-            game_finished = self.board.is_game_finished()
-            if game_finished:
-                break
-
+            continue_game = self.update_and_continue_game(
+                user_choice, TOKEN_PLAYER
+            )
+            sleep(0.2)
             ai_choice = random.choice(self.board.get_available_options())
-            system("cls" if name == "nt" else "clear")
-            self.display_game()
-
-            game_finished = self.board.is_game_finished()
-            if game_finished:
-                break
-
-            sleep(0.5)
-            self.board.update_board(ai_choice, TOKEN_CPU)
-            system("cls" if name == "nt" else "clear")
-            self.display_game()
-            game_finished = self.board.is_game_finished()
-            if game_finished:
-                break
+            continue_game = self.update_and_continue_game(ai_choice, TOKEN_CPU)
 
 
 def run_game():
