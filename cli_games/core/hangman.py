@@ -16,11 +16,11 @@ def find_indexes_of_letter(string, letter):
 
 
 def display_word(letters: list[str]):
-    print(" ".join(letters), "\n")
+    print(" ".join(letters), end="\n")
 
 
 def run_game(settings: GameSettings) -> None:
-    print("You are playing HANGMAN!\n")
+    print("You are playing HANGMAN!", end="\n")
     life_support = LifeSupport(settings.total_lives)
     selected_index = random.randint(0, len(settings.word_list) - 1)
     selected_word = settings.word_list[selected_index].lower()
@@ -35,13 +35,9 @@ def run_game(settings: GameSettings) -> None:
         while user_choice not in user_choices:
             user_choice = input("Pick a letter: ").lower()
             system("cls" if name == "nt" else "clear")
-            print("You are playing HANGMAN!\n")
+            print("You are playing HANGMAN!", end="\n")
             if user_choice in user_choices:
-                print(
-                    f"You have already picked '{user_choice}'.",
-                    "Try something else!",
-                    "\n",
-                )
+                print(f"You have already used '{user_choice}'.", end="\n")
             else:
                 user_choices.add(user_choice)
 
@@ -54,21 +50,12 @@ def run_game(settings: GameSettings) -> None:
         else:
             life_support.manage_hit()
             if life_support.is_dead:
-                print(
-                    "Dead?!",
-                    "Really?!",
-                    "Come on mon!",
-                    f"The word was '{selected_word}'!",
-                )
+                print(f"The word was '{selected_word}'!")
                 break
 
         print(sorted(user_choices))
         display_word(word_display)
 
         if "_" not in word_display:
-            print(
-                "Correct!",
-                f"The word was '{selected_word}'.",
-                "Here's a cake to celebrate! 🎂",
-            )
+            print("Correct!", f"The word was '{selected_word}'.")
             break
