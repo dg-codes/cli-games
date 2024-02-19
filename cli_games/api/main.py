@@ -1,7 +1,7 @@
 from os import getcwd, name, system
 from pathlib import Path
 
-from cli_games.core import hangman, tic_tac_toe
+from cli_games.core import hangman, number_guesser, tic_tac_toe
 from cli_games.utils.file_manager import load_data
 
 
@@ -25,5 +25,7 @@ def run_app():
         )
         game_settings = hangman.GameSettings(word_list=words)
         hangman.run_game(game_settings)
+    if user_input == "2":
+        number_guesser.run_game(number_guesser.GameSettings())
     if user_input == "3":
         tic_tac_toe.run_game()
