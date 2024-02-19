@@ -39,6 +39,6 @@ class LifeSupport:
         return _display_message
 
     def _display_dead(self):
-        _message = "💀  You be dead now mon! 💀"
+        _message = "💀  You lose! 💀"
         print(_message)
         return _message
