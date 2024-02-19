@@ -1,6 +1,5 @@
 import random
 from dataclasses import dataclass
-from os import name, system
 
 from cli_games.utils.life_support import LifeSupport
 
@@ -28,19 +27,11 @@ def run_game(settings: GameSettings):
         player_guess = int(input("Your guess is?\n"))
 
         if player_guess == number_to_guess:
-            print(
-                "Congrats! You live to see another day!",
-                "Here's a cake to celebrate! 🎂",
-            )
+            print(f"Correct! The number was {number_to_guess}.")
             break
 
         life_support.manage_hit()
         if life_support.is_dead:
             break
 
-        print("WRONG!", "Try again!")
-
-
-if __name__ == "__main__":
-    system("cls" if name == "nt" else "clear")
-    run_game(GameSettings())
+        print("Try again!")
