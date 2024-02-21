@@ -11,51 +11,59 @@ class GameSettings:
     total_lives: int = 10
 
 
-def find_indexes_of_letter(string, letter):
-    return [index for index, char in enumerate(string) if char == letter]
+class Hangman:
+    def __init__(self, game_settings: GameSettings) -> None:
+        self._settings = game_settings
+        self._selected_word = None
+        self._word_display = None
 
+    def find_indexes_of_letter(self, letter):
+        return [
+            index
+            for index, char in enumerate(self._selected_word)
+            if char == letter
+        ]
 
-def display_word(letters: list[str]):
-    print(" ".join(letters), end="\n")
+    def display_word(self):
+        print(" ".join(self._word_display), end="\n")
 
+    def run_game(self) -> None:
+        print("You are playing HANGMAN!", end="\n")
+        life_support = LifeSupport(self._settings.total_lives)
+        selected_index = random.randint(0, len(self._settings.word_list) - 1)
+        self._selected_word = self._settings.word_list[selected_index].lower()
+        user_choices = set()
+        self._word_display = ["_"] * len(self._selected_word)
 
-def run_game(settings: GameSettings) -> None:
-    print("You are playing HANGMAN!", end="\n")
-    life_support = LifeSupport(settings.total_lives)
-    selected_index = random.randint(0, len(settings.word_list) - 1)
-    selected_word = settings.word_list[selected_index].lower()
-    user_choices = set()
-    word_display = ["_"] * len(selected_word)
+        print([])
+        self.display_word()
 
-    print([])
-    display_word(word_display)
+        while True:
+            user_choice = None
+            while user_choice not in user_choices:
+                user_choice = input("Pick a letter: ").lower()
+                system("cls" if name == "nt" else "clear")
+                print("You are playing HANGMAN!", end="\n")
+                if user_choice in user_choices:
+                    print(f"You have already used '{user_choice}'.", end="\n")
+                else:
+                    user_choices.add(user_choice)
 
-    while True:
-        user_choice = None
-        while user_choice not in user_choices:
-            user_choice = input("Pick a letter: ").lower()
-            system("cls" if name == "nt" else "clear")
-            print("You are playing HANGMAN!", end="\n")
-            if user_choice in user_choices:
-                print(f"You have already used '{user_choice}'.", end="\n")
+            indexes_to_change = self.find_indexes_of_letter(user_choice)
+
+            if len(indexes_to_change) > 0:
+                for i in indexes_to_change:
+                    self._word_display[i] = user_choice
+                life_support.display_lives()
             else:
-                user_choices.add(user_choice)
+                life_support.manage_hit()
+                if life_support.is_dead:
+                    print(f"The word was '{self._selected_word}'!")
+                    break
 
-        indexes_to_change = find_indexes_of_letter(selected_word, user_choice)
+            print(sorted(user_choices))
+            self.display_word()
 
-        if len(indexes_to_change) > 0:
-            for i in indexes_to_change:
-                word_display[i] = user_choice
-            life_support.display_lives()
-        else:
-            life_support.manage_hit()
-            if life_support.is_dead:
-                print(f"The word was '{selected_word}'!")
+            if "_" not in self._word_display:
+                print("Correct!", f"The word was '{self._selected_word}'.")
                 break
-
-        print(sorted(user_choices))
-        display_word(word_display)
-
-        if "_" not in word_display:
-            print("Correct!", f"The word was '{selected_word}'.")
-            break

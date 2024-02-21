@@ -24,7 +24,7 @@ def run_app():
             current_directory / "cli_games" / "data" / "hangman.txt"
         )
         game_settings = hangman.GameSettings(word_list=words)
-        hangman.run_game(game_settings)
+        hangman.Hangman(game_settings).run_game()
     if user_input == "2":
         number_guesser.run_game(number_guesser.GameSettings())
     if user_input == "3":
